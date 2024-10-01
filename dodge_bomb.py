@@ -12,6 +12,25 @@ DELTA = {pg.K_UP:(0, -5),
          }
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+def roto_zoom(kk_img: pg.Surface, tpl: tuple) -> pg.Surface:
+    """
+    引数：kk_img、押下キーに対する移動量の合計値タプル
+    戻り値：回転、反転処理後のこうかとんSurface
+    こうかとん画像の切り替え処理を行う関数
+    """
+    fl_kk_img = pg.transform.flip(kk_img, True, False)
+    roto_dic = {(0, -5):pg.transform.rotozoom(fl_kk_img, 90.0, 1.0),
+                (+5, -5):pg.transform.rotozoom(fl_kk_img, 45.0, 1.0),
+                (+5, 0):fl_kk_img,
+                (+5, +5):pg.transform.rotozoom(fl_kk_img, -45.0, 1.0),
+                (0, +5):pg.transform.rotozoom(fl_kk_img, -90.0, 1.0),
+                (-5, +5):pg.transform.rotozoom(kk_img, 45.0, 1.0),
+                (-5, -5):pg.transform.rotozoom(kk_img, -45.0, 1.0),
+                (-5, 0):kk_img,
+                (0, 0):fl_kk_img,
+                }
+    return roto_dic[tpl]
+
 def game_over(screen):
     """
     引数：screen
@@ -92,7 +111,7 @@ def main():
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-        screen.blit(kk_img, kk_rct)
+        screen.blit(roto_zoom(kk_img, tuple(sum_mv)), kk_rct)
 
         bb_rct.move_ip(vx, vy)
         yoko, tate = check_bound(bb_rct)
