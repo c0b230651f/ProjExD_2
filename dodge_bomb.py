@@ -12,10 +12,10 @@ DELTA = {pg.K_UP:(0, -5),
          }
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-def speedup() -> [list, list, int]: 
+def speedup() -> [list, list, int]:
     """
     引数：無し
-    返り値：加速度リストaccs、Surfaceのリストimgs、変数r 
+    返り値：加速度リストaccs、Surfaceのリストimgs、変数r
     未完成
     爆弾が拡大、加速する関数
     """
