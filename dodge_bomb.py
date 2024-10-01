@@ -12,6 +12,29 @@ DELTA = {pg.K_UP:(0, -5),
          }
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+def game_over(screen):
+    """
+    引数：screen
+    戻り値：なし
+    ゲームオーバー時の描画を行う関数
+    """
+    go_bg = pg.Surface((WIDTH, HEIGHT))
+    go_kk_img = pg.image.load("fig/8.png")
+    go_kk_l_rct = (WIDTH/2 - 200, HEIGHT/2)
+    go_kk_r_rct = (WIDTH/2 + 200, HEIGHT/2)
+    go_rct = pg.Rect(0, 0, WIDTH, HEIGHT)
+    pg.draw.rect(go_bg, (0, 0, 0), go_rct)
+    go_bg.set_alpha(156)
+    fonto = pg.font.Font(None, 80)
+    txt = fonto.render("GAME OVER",
+                       True, (255, 0, 0))
+    screen.blit(go_bg, (0, 0))
+    screen.blit(go_kk_img, go_kk_l_rct)
+    screen.blit(go_kk_img, go_kk_r_rct)
+    screen.blit(txt, [WIDTH/2-150, HEIGHT/2])
+    pg.display.update()
+    pg.time.wait(5000)
+
 def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     """
     引数：こうかとん　または　爆弾のRect
@@ -49,7 +72,7 @@ def main():
         if kk_rct.colliderect(bb_rct):
             # こうかとんと爆弾が重なっていたら
             print("GAME OVER")
-            # print("PRESS \"R\" to try again")
+            game_over(screen)
             return
 
         key_lst = pg.key.get_pressed()
